@@ -6,7 +6,7 @@
 #include <string.h>
 
 
-int main(int argc, char* argv[], char* envp[]){
+int main(){
   
   repl();
   return 0;

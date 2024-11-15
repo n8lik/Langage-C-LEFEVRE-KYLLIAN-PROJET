@@ -1,37 +1,13 @@
+#define _GNU_SOURCE 
 #include <stdbool.h>
 #include <string.h>
-
-
-
-
-typedef enum {
-  META_COMMAND_SUCCESS,
-  META_COMMAND_UNRECOGNIZED_COMMAND
-} MetaCommandResult;
-
-typedef enum { PREPARE_SUCCESS, PREPARE_UNRECOGNIZED_STATEMENT } PrepareResult;
-
-typedef enum { STATEMENT_INSERT, STATEMENT_SELECT } StatementType;
-
-typedef struct {
-  StatementType type;
-} Statement;
-
-typedef struct {
-    int id; 
-    char name[256]; 
-} Row;
-
-#define MAX_ROWS 100 
-
-Row rows[MAX_ROWS]; 
-size_t num_rows = 0; 
-
-typedef struct {
-  char* buffer;
-  size_t buffer_length;
-  ssize_t input_length;
-} InputBuffer;
+#include <stdlib.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include "load.h"
+#include "repl.h"
+Row rows[MAX_ROWS];
+size_t num_rows = 0;
 
 InputBuffer* new_input_buffer() {
   InputBuffer* input_buffer = (InputBuffer*)malloc(sizeof(InputBuffer));
@@ -73,9 +49,21 @@ MetaCommandResult do_meta_command(InputBuffer* input_buffer) {
     close_input_buffer(input_buffer);
     exit(EXIT_SUCCESS);
   } else if(strcmp(input_buffer->buffer, ".help") == 0) {
-    printf("Les commandes disponibles sont : Select : ")
-    
-  }
+    printf("Commands available : ");
+    printf(".help : Show help message\n");
+    printf(".exit : exit the buffer\n");
+    printf(".count : Show the amount of lines in the database\n");
+    printf(".load : load a database\n");
+    return META_COMMAND_SUCCESS;
+    } else if (strcmp(input_buffer->buffer, ".count") == 0) {
+        printf("There are %zu lines in the database.\n", num_rows);
+        return META_COMMAND_SUCCESS;
+    }else if(strcmp(input_buffer->buffer, ".load") == 0) {
+        load();
+        return META_COMMAND_SUCCESS;
+    } else {
+        return META_COMMAND_UNRECOGNIZED_COMMAND;
+    }
 }
 
 PrepareResult prepare_statement(InputBuffer* input_buffer,
@@ -100,7 +88,7 @@ void execute_statement(Statement* statement) {
                 printf("Error: Table full. Cannot insert new row.\n");
                 return;
             }
-            Row* row = &rows[num_rows]
+            Row* row = &rows[num_rows];
             printf("Enter id: ");
             scanf("%d", &row->id); 
             printf("Enter name: ");
@@ -115,7 +103,7 @@ void execute_statement(Statement* statement) {
     case (STATEMENT_SELECT):
 
        for (size_t i = 0; i < num_rows; i++) {
-                printf("Row %d: id = %d, name = %s\n", i, rows[i].id, rows[i].name);
+                printf("Row %ld: id = %d, name = %s\n", i, rows[i].id, rows[i].name);
             
             break;
         }
