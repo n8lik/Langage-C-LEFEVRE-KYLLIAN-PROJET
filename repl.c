@@ -59,7 +59,7 @@ MetaCommandResult do_meta_command(InputBuffer* input_buffer) {
         printf("There are %zu lines in the database.\n", num_rows);
         return META_COMMAND_SUCCESS;
     }else if(strcmp(input_buffer->buffer, ".load") == 0) {
-        load();
+        load("test.sql");
         return META_COMMAND_SUCCESS;
     } else {
         return META_COMMAND_UNRECOGNIZED_COMMAND;
