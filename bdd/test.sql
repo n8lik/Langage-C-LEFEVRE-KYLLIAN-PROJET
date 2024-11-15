@@ -17,6 +17,3 @@ SELECT * FROM utilisateurs;
 
 -- Mise à jour d'un utilisateur
 UPDATE utilisateurs SET email = 'alice.new@email.com' WHERE id = 1;
-
--- Suppression d'un utilisateur
-DELETE FROM utilisateurs WHERE id = 3;

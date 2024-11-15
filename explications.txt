@@ -1,2 +1,7 @@
-I took the skeleton code from Mbahal github, and i completed the repl.c.
-Then i will add a feature who permit  to load an extern database
+I took the skeleton code from Mbahal github, and i completed the repl.c by adding some commands and completing SQL commands.
+
+Then i will add a feature who permit to load an extern database, to do this in a normal way i cut it in some step :
+- Step 1 : Create load.c / load.h files and call a function load who print "test" in repl.call
+- Step 2 : Open a file with his name.
+- Step 3 : Add a function to cut all useless white spaces in file lines 
+- Step 3 : Parse the file and find the commands to put the good datas in the good place inside the structure TABLE
