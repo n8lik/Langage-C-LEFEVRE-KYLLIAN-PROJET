@@ -3,6 +3,9 @@
         "stdio.h": "c",
         "cstdlib": "c",
         "types.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "load.h": "c",
+        "arbre.h": "c",
+        "typeinfo": "c"
     }
 }

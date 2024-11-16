@@ -1,6 +1,7 @@
 #ifndef load_h
 #define load_h
 
+#include "arbre.h"
 #define MAX_LINE_LENGTH 300
 #define MAX_TABLES 10
 #define MAX_COLUMNS 20
