@@ -25,3 +25,15 @@ INSERT INTO utilisateurs (nom, email, date_inscription) VALUES
 ('Bob Martin', 'bob@email.com', '2024-02-20'),
 ('Charlie Brown', 'charlie@email.com', '2024-03-10');
 
+-- Insertion de quelques données
+INSERT INTO test (nom, email, date_inscription) VALUES
+('Alice Dupont', 'alice@email.com', '2024-01-15'),
+('Bob Martin', 'bob@email.com', '2024-02-20'),
+('Charlie Brown', 'charlie@email.com', '2024-03-10');
+
+-- Insertion de quelques données
+INSERT INTO tost (nom, email, date_inscription) VALUES
+('Alice Dupont', 'alice@email.com', '2024-01-15'),
+('Bob Martin', 'bob@email.com', '2024-02-20'),
+('Charlie Brown', 'charlie@email.com', '2024-03-10');
+
