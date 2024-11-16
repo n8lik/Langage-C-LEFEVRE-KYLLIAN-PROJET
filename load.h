@@ -9,7 +9,7 @@
 #define MAX_CELL_LENGTH 50
 #define MAX_TYPE_LENGTH 20
 typedef struct Table Table;
-
+struct Table; 
 extern int num_tables;
 struct Column {
     char name[50];
@@ -30,7 +30,6 @@ struct Table{
     int num_rows;
     
 };
-
 void trim(char *str);
 void create_table(char *full_statement);
 void insert_into(char *full_statement);

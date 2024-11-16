@@ -5,7 +5,7 @@
 
 struct Table tables[MAX_TABLES];
 
-initialize_tree(tables);
+TreeNode* newNode = NULL;
 
 int num_tables = 0;
 
@@ -49,13 +49,18 @@ void create_table(char *full_statement) // Create a table
     tables[num_tables].num_rows = 0; // Initialize the number of rows to 0
     tables[num_tables].id = num_tables; // Assign the table ID
     printf("Table %s created\n", tables[num_tables].name); // Print a message
+    TreeNode* firstnode = initialize_tree(&tables[num_tables].name); // Initialize the tree
+
 
     token = strtok(NULL, "(,"); // Tokenize the next token to extract the columns
    while (token != NULL && tables[num_tables].num_columns < MAX_COLUMNS) // While the token is not NULL and the number of columns is less than the maximum number of columns
     {
-        
+                      
             strcpy(tables[num_tables].columns[tables[num_tables].num_columns].name, token); // Copy the token to the column name
+            newNode = insert(firstnode, &tables[num_tables]); // Insert the table into the tree
+
             tables[num_tables].num_columns++; // Increment the number of columns
+            
         
         token = strtok(NULL, ","); // Tokenize the next token
     } 
@@ -65,6 +70,7 @@ void create_table(char *full_statement) // Create a table
     {
         printf("  - %s %s\n", tables[num_tables].columns[i].name, tables[num_tables].columns[i].type); // Print the column name and type
     }
+
 
     num_tables++; // Increment the number of tables
 }
@@ -176,6 +182,7 @@ void insert_into(char *full_statement)
             {
                 strncpy(tables[table_id].data[row][col_index], values[i], MAX_CELL_LENGTH - 1); // Copy the value to the data
                 tables[table_id].data[row][col_index][MAX_CELL_LENGTH - 1] = '\0'; // Null-terminate the data
+                insert(newNode, &tables[table_id]); // Insert the table into the tree
             }
         }
         tables[table_id].num_rows++; // Increment the number of rows

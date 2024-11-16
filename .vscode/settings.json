@@ -6,6 +6,7 @@
         "stdlib.h": "c",
         "load.h": "c",
         "arbre.h": "c",
-        "typeinfo": "c"
+        "typeinfo": "c",
+        "stdbool.h": "c"
     }
 }

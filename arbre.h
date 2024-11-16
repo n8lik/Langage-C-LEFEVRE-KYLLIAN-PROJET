@@ -9,6 +9,7 @@
 #include "load.h"
 
 
+
 typedef struct TreeNode TreeNode;
 
  struct TreeNode {
@@ -18,9 +19,10 @@ typedef struct TreeNode TreeNode;
 };
 
 
+
+TreeNode* initialize_tree(struct Table *table);
 TreeNode* create_node(struct Table *table);
 TreeNode* insert(TreeNode* node, struct Table *table);
 TreeNode* search(TreeNode* root, const char* tableName);
-void inorderTraversal(TreeNode* root);
 
 #endif

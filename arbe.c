@@ -4,7 +4,10 @@
 struct TreeNode *root = NULL;
 
 
-
+TreeNode* initialize_tree (struct Table *table) { // Initialize the tree
+    root = create_node(table);
+    return root;
+}
 TreeNode* create_node(struct Table *table) { // Create a new node
     TreeNode* newNode = (TreeNode*)malloc(sizeof(TreeNode)); // Allocate memory for new node
     newNode->table = table; // Assign table to node
