@@ -54,8 +54,12 @@ void create_table(char *full_statement) // Create a table
     tables[num_tables].num_rows = 0; // Initialize the number of rows to 0
     tables[num_tables].id = num_tables; // Assign the table ID
     printf("Table %s created\n", tables[num_tables].name); // Print a message
-    firstNode = create_node(TABLE_NODE, &tables[num_tables]);
 
+    if (!firstNode) {    
+        firstNode = create_node(TABLE_NODE, &tables[num_tables]);
+    } else {
+        insert(firstNode, TABLE_NODE, &tables[num_tables]);
+    }
     token = strtok(NULL, "(,"); // Tokenize the next token to extract the columns
    while (token != NULL && tables[num_tables].num_columns < MAX_COLUMNS) // While the token is not NULL and the number of columns is less than the maximum number of columns
     {
@@ -185,30 +189,17 @@ void insert_into(char *full_statement)
             printf("Inserting values:\n"); // Print a message
             for (int i = 0; i < num_columns; i++) {
                 printf("  %s: %s\n", columns[i], values[i]);
-                TreeNode* tableNode = search(firstNode, tables[table_id].name);
-                if (tableNode != NULL) {
-                    TreeNode* columnNode = tableNode->firstChild;
-                    while (columnNode != NULL && strcmp(((struct Column*)columnNode->data.column)->name, columns[i]) != 0) {
-                        columnNode = columnNode->right;
-                    }
-                    if (columnNode != NULL) {
-                        TreeNode* valueNode = create_node(VALUE_NODE, values[i]);
-                        if (columnNode->firstChild == NULL) {
-                            columnNode->firstChild = valueNode;
-                        } else {
-                            TreeNode* lastValue = columnNode->firstChild;
-                            while (lastValue->right != NULL) {
-                                lastValue = lastValue->right;
-                            }
-                            lastValue->right = valueNode;
-                        }
-                    }
-                }
+                
+
+                
             }
 
             if (tables[table_id].num_rows < MAX_ROWS) { // If the number of rows is less than the maximum number of rows
                 for (int i = 0; i < num_columns; i++) { // For each column
                     strncpy(tables[table_id].data[tables[table_id].num_rows][i], values[i], MAX_CELL_LENGTH - 1); // Copy the value to the data
+                    
+                    insert(firstNode, VALUE_NODE, values[i]);
+
                     tables[table_id].data[tables[table_id].num_rows][i][MAX_CELL_LENGTH - 1] = '\0'; // Null-terminate the data
                 }
                 tables[table_id].num_rows++; // Increment the number of rows

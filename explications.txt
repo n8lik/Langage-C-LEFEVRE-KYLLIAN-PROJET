@@ -4,10 +4,13 @@ Then i will add a feature who permit to load an extern database, to do this in a
 - Step 1 : Create load.c / load.h files and call a function load who print "test" in repl.call
 - Step 2 : Open a file with his name.
 - Step 3 : Add a function to cut all useless white spaces in lines 
-- Step 3 : Parse the file and find the commands to put the good datas in the good place inside the structure TABLE
+- Step 3 : Parse the file content and find the commands to put the good datas in the good place inside the structure TABLE (was pretty hard to find the good things and put it to the good places with a token)
+- Step 4 : Add the b tree
+- Step 5 : Add the datas from Table to the btree.
 
 
-
+The only thing that my code can read its Create Table and Insert into. I could add the select from and UPDATE but i failed. so i present you only this. 
+For the select and the update i wanted to add back to the same file the line in SQL,so you load the file and you add lines on it with the sentences that the guy wrote (select etc) and then use the same process to load and read the lines.
 
 
 
