@@ -14,8 +14,13 @@ BTREE doc :
 
 to run the file : 
 
-    - Dl the repo
+    - Download the repo
     - Install GCC on a new machine
     - run "make" in the terminal
 
+to use the file :
+
+    - donwload a SQL file who contains only INSERT INTO and CREATE TABLE
+    - type .load in console
+    
     
