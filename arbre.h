@@ -8,21 +8,28 @@
 #include <string.h>
 #include "load.h"
 
-
+typedef enum {TABLE_NODE, COLUMN_NODE, VALUE_NODE} NodeType;
 
 typedef struct TreeNode TreeNode;
 
- struct TreeNode {
-    struct Table *table;
+struct TreeNode {
+    NodeType type;
+    union {
+        struct Table *table;
+        struct Column *column;
+        char *value;
+    } data;
     struct TreeNode *left;
     struct TreeNode *right;
+    struct TreeNode *firstChild;  
 };
 
+TreeNode* create_node(NodeType type, void* data);
+TreeNode* insert(TreeNode* node, NodeType type, void* data);
 
-
-TreeNode* initialize_tree(struct Table *table);
-TreeNode* create_node(struct Table *table);
-TreeNode* insert(TreeNode* node, struct Table *table);
 TreeNode* search(TreeNode* root, const char* tableName);
 
+
+
+void print_tree(TreeNode* root, int level);
 #endif

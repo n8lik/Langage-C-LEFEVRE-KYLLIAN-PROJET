@@ -12,6 +12,7 @@ typedef struct Table Table;
 struct Table; 
 extern int num_tables;
 struct Column {
+    int id;
     char name[50];
     char type[MAX_TYPE_LENGTH];
     int is_auto_increment;

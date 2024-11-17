@@ -4,41 +4,100 @@
 struct TreeNode *root = NULL;
 
 
-TreeNode* initialize_tree (struct Table *table) { // Initialize the tree
-    root = create_node(table);
-    return root;
-}
-TreeNode* create_node(struct Table *table) { // Create a new node
-    TreeNode* newNode = (TreeNode*)malloc(sizeof(TreeNode)); // Allocate memory for new node
-    newNode->table = table; // Assign table to node
-    newNode->left = newNode->right = NULL; // Initialize left and right children as NULL
-    return newNode; // Return the new node
-}
 
-TreeNode* insert(TreeNode* node, struct Table *table) { // Insert a new table into the tree
+TreeNode* create_node(NodeType type, void* data)
+{
+    TreeNode* newNode = (TreeNode*)malloc(sizeof(TreeNode));
+    if (newNode == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        exit(1);
+    }
+    newNode->type = type;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    newNode->firstChild = NULL;
+
+    switch(type) {
+        case TABLE_NODE:
+            newNode->data.table = (struct Table*)data;
+            break;
+        case COLUMN_NODE:
+            newNode->data.column = (struct Column*)data;
+            break;
+        case VALUE_NODE:
+            newNode->data.value = (char*)data;
+            break;
+    }
+
+    return newNode;
+}
+TreeNode* insert(TreeNode* node, NodeType type, void* data)
+{
     if (node == NULL) {
-        return create_node(table);
-    } // If the tree is empty, return a new node
- 
-    if (strcmp(table->name, node->table->name) < 0) {
-                                                     // If the table name is less than the current node, insert it into the left subtree
-        node->left = insert(node->left, table); 
-        }  
-    else if (strcmp(table->name, node->table->name) > 0)
-     {
-        node->right = insert(node->right, table); // If the table name is greater than the current node, insert it into the right subtree
-     }
-    return node; 
+        return create_node(type, data);
+    }
+
+    if (type == TABLE_NODE) {
+        int cmp = strcmp(((struct Table*)data)->name, node->data.table->name);
+        if (cmp < 0) {
+            node->left = insert(node->left, type, data);
+        } else if (cmp > 0) {
+            node->right = insert(node->right, type, data);
+        }
+    } else if (type == COLUMN_NODE) {
+        if (node->firstChild == NULL) {
+            node->firstChild = create_node(type, data);
+        } else {
+            TreeNode* current = node->firstChild;
+            while (current->right != NULL) {
+                current = current->right;
+            }
+            current->right = create_node(type, data);
+        }
+    } else if (type == VALUE_NODE) {
+        if (node->firstChild == NULL) {
+            node->firstChild = create_node(type, data);
+        } else {
+            TreeNode* current = node->firstChild;
+            while (current->right != NULL) {
+                current = current->right;
+            }
+            current->right = create_node(type, data);
+        }
+    }
+
+    return node;
 }
 
-TreeNode* search(TreeNode* root, const char* tableName) { // Search for a table in the tree
-    if (root == NULL || strcmp(tableName, root->table->name) == 0){ // If the tree is empty or the table is found, return the root
-        return root;}
+TreeNode* search(TreeNode* root, const char* tableName) { 
+    if (root == NULL || strcmp(tableName, root->data.table->name) == 0) {
+        return root;
+    }
 
-    if (strcmp(tableName, root->table->name) < 0) {
-        return search(root->left, tableName); 
-        }// If the table name is less than the current node, search the left subtree
-
-    return search(root->right, tableName); // If the table name is greater than the current node, search the right subtree
+    if (strcmp(tableName, root->data.table->name) < 0) {
+        return search(root->left, tableName);
+    } else {
+        return search(root->right, tableName);
+    }
 }
 
+void print_tree(TreeNode* node, int level) {
+    if (node == NULL) return;
+
+    for (int i = 0; i < level; i++) printf("  ");
+
+    switch (node->type) {
+        case TABLE_NODE:
+            printf("|-- %s\n", node->data.table->name);
+            break;
+        case COLUMN_NODE:
+            printf("|-- Column: %s\n", node->data.column->name);
+            break;
+        case VALUE_NODE:
+            printf("|-- Value: %s\n", node->data.value);
+            break;
+    }
+
+    print_tree(node->firstChild, level + 1);
+    print_tree(node->right, level);
+}
